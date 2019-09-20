@@ -4,8 +4,8 @@ import React from 'react';
 const userInput = (props) =>{
     return (
         <div className="userInput">
-            <p>I started as { props.userName }</p>
-            <input onChange={props.changed} type="text" />
+            <p>User Input</p>
+            <input onChange={props.changed} type="text" value={props.originalValue} />
         </div>
     )
 }

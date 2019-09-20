@@ -5,8 +5,8 @@ const userOutput = (props) =>{
     return (
         <div className="userOutput">
             <hr />
+            <p>{ props.original }</p>
             <p>{ props.userName }</p>
-            <p>{ props.changed }</p>
         </div>
     )
 }
