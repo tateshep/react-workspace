@@ -11,6 +11,8 @@ class App extends Component {
       {name:'Frodo',age:33},
     ],
     otherState: 'som other values',
+    showPersons: false,
+
   }
 
   switchNameHandler = (newName) => {
@@ -21,7 +23,7 @@ class App extends Component {
           {name:newName,age:28},
           {name:'Gandalf',age:2019},
           {name:'Frodo',age:34},
-        ]
+        ],
     } )
   }
 
@@ -35,6 +37,23 @@ class App extends Component {
     } )
   }
 
+  deletePersonHandler = (personIndex) => {
+
+    // always update state in an immutable fashion. 
+    // Create a copy, update the copy, leave the original the same
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
+  }
+
+  togglePersonHandler = () => {
+    // with the error function,s the 'this' keyword always refers to the class
+    const doesShow= this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
+  
   render() {
 
     // inline styling
@@ -49,28 +68,31 @@ class App extends Component {
       
     };
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      // Can also use a ternery operator within the return, with simple statements to achieve the same thing
+      // however this if statement is the preferred way
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person 
+                click={() => this.deletePersonHandler(index)} 
+                name={person.name} 
+                age={person.age} />
+          })}
+        </div>
+      )
+    }
+
     return (
       <div className="App">
         <h1>React App</h1>
       {/*  Use the bind syntax instead typically */}
         <button style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
-
-        <Person 
-          name={this.state.persons[0].name} 
-          age={this.state.persons[0].age}
-          click={this.switchNameHandler.bind(this, 'TATERONAUT')}
-          changed={this.nameChangedHandler}/>
-
-        <Person 
-          name={this.state.persons[1].name} 
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler}/>
-
-        <Person 
-          name={this.state.persons[2].name} 
-          age={this.state.persons[2].age}
-          click={this.switchNameHandler} >The Ring is my burden</Person>
-
+        <button syle={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
+        
+        { persons }
 
       </div>
     );
