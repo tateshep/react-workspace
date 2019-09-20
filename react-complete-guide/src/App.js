@@ -46,7 +46,6 @@ class App extends Component {
       fontSize: '24px',
       color: 'white',
       boxShadow: '4px 4px 0 0 black',
-  
       
     };
 

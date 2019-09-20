@@ -8,7 +8,7 @@ class App extends Component {
   
   state = {
     userNames: [
-      {userName: 'fred'},
+      {userName: 'fred', originalValue: 'fred'},
       {userName: 'jorge'},
       {userName: 'george'},
       
@@ -18,7 +18,7 @@ class App extends Component {
   userNameHandler = (event) => {
     this.setState({
       userNames: [
-        {userName: event.target.value},
+        {userName: event.target.value, originalValue: 'fred'},
         {userName: 'jorge'},
         {userName: 'george'},
 
@@ -28,9 +28,16 @@ class App extends Component {
 
   render() {
     
+
+    // styling 
+    const style = {
+      backgroundColor : '#333',
+      color: 'white',
+    };
+
     return (
-      <div className="App">
-        <UserInput changed = {this.userNameHandler} name="User Input"></UserInput>
+      <div style={style} className="App">
+        <UserInput changed = {this.userNameHandler} userName={this.state.userNames[0].originalValue}></UserInput>
 
         <UserOutput userName={this.state.userNames[0].userName}></UserOutput>
         <UserOutput userName={this.state.userNames[1].userName}></UserOutput>
