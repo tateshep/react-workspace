@@ -6,9 +6,9 @@ class App extends Component {
 
   state = {
     persons: [
-      {name:'Tate',age:28},
-      {name:'Gandalf',age:2019},
-      {name:'Frodo',age:33},
+      {id: 'asd',name:'Tate',age:28},
+      {id: 'fgh',name:'Gandalf',age:2019},
+      {id: 'jkl',name:'Frodo',age:33},
     ],
     otherState: 'som other values',
     showPersons: false,
@@ -27,14 +27,22 @@ class App extends Component {
     } )
   }
 
-  nameChangedHandler = (event) => {
-    this.setState( {
-        persons: [
-          {name: event.target.value ,age:28},
-          {name:'Gandalf',age:2019},
-          {name:'Frodo',age:34},
-        ]
-    } )
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+    const person = {
+      // same as
+      // const person = Object.assign({}, this.state.persons[personIndex])
+        ...this.state.persons[personIndex],
+    };
+    
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState( {persons: persons} )
   }
 
   deletePersonHandler = (personIndex) => {
@@ -77,9 +85,12 @@ class App extends Component {
         <div>
           {this.state.persons.map((person, index) => {
             return <Person 
-                click={() => this.deletePersonHandler(index)} 
+                click={() => this.deletePersonHandler(person.id)} 
                 name={person.name} 
-                age={person.age} />
+                age={person.age}
+                // added unique ids to the states to fix console error about 'keys'
+                key={person.id}
+                changed={ (event) => this.nameChangedHandler(event, person.id)} />
           })}
         </div>
       )
@@ -87,7 +98,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>React App</h1>
+        
       {/*  Use the bind syntax instead typically */}
         <button style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
         <button syle={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
