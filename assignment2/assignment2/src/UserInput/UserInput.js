@@ -8,7 +8,7 @@ const userInput = (props) => {
     return (
         <div className="UserInput">
             <p>User Input</p>
-        <input onChange={props.changed} type="text" />
+        <input onChange={props.changed} type="text" value={props.chars}/>
             <p>Change Listener: {props.inputLength}</p>
         </div>
     )

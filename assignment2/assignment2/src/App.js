@@ -7,20 +7,33 @@ import CharComponent from './CharComponent/CharComponent';
 
 
 class App extends Component {
+  // my validation method does not check updated text after deleting, whereas the solution does
 
 
   state = {
     inputLength: 0,
+    chars: 'fasdf',
   }
 
   
 
   lengthHandler = (event) => {
     
-    let value = event.target.value.split('').length;
+    let value = event.target.value;
     
     this.setState({
-      inputLength: value,
+      inputLength: value.split('').length,
+      chars: value,
+    })
+    // console.log(this.state.chars);
+  }
+
+  deleteCharHandler = (charIndex) => {
+    const text = this.state.chars.split('');
+    text.splice(charIndex, 1);
+    const updatedText = text.join('');
+    this.setState({
+      chars: updatedText
     })
   }
 
@@ -28,11 +41,19 @@ class App extends Component {
 
     const style = {
       border: 'solid cyan 3px',
-    }
+    }    
 
-    const inlineStyle = {
-      display: 'block',
-    }
+    const charList = this.state.chars.split('').map( (char , index) => {
+            
+            // console.log(this.state.chars[index]);
+
+            return <CharComponent
+              letter = {char}
+              key = {index}
+              clicked = { () => this.deleteCharHandler(index) }
+            />
+          });
+
 
     return (
       <div className="App">
@@ -40,13 +61,12 @@ class App extends Component {
 
         <UserInput
           inputLength={this.state.inputLength}
-          changed={ (event)  => this.lengthHandler(event)}></UserInput>
+          changed={ (event)  => this.lengthHandler(event)}
+          chars={this.state.chars}></UserInput>
 
           <ValidationComponent inputLength= {this.state.inputLength}></ValidationComponent>
 
-          <CharComponent style={inlineStyle}></CharComponent>
-          <CharComponent style={inlineStyle}></CharComponent>
-          <CharComponent style={inlineStyle}></CharComponent>
+          { charList }
 
       </div>
     );
