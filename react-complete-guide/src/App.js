@@ -93,15 +93,31 @@ class App extends Component {
                 changed={ (event) => this.nameChangedHandler(event, person.id)} />
           })}
         </div>
-      )
+      );
+
+
+      style.backgroundColor = 'red'
+    }
+
+    let classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push('red'); // classes will be 'red'
+
+    }
+
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
     }
 
     return (
       <div className="App">
         
+        <p className={classes.join(' ')}>Hello this is a paragraph</p>
+
       {/*  Use the bind syntax instead typically */}
         <button style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
-        <button syle={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
+        <button style={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
         
         { persons }
 
