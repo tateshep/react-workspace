@@ -97,6 +97,7 @@ class App extends Component {
 
 
       style.backgroundColor = 'red'
+
     }
 
     let classes = [];
@@ -111,21 +112,22 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
-        
-        <p className={classes.join(' ')}>Hello this is a paragraph</p>
 
-      {/*  Use the bind syntax instead typically */}
-        <button style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
-        <button style={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
-        
-        { persons }
-
-      </div>
-    );
-
-      // return React.createElement('div', null, 'h1', "Hi i\'m a Reactapp");
-    
+        <div className="App">
+          
+          <p className={classes.join(' ')}>Hello this is a paragraph</p>
+  
+        {/*  Use the bind syntax instead typically */}
+          <button key="button1" style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
+          <button key="button2" style={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
+          
+          { persons }
+  
+        </div>
+      );
+  
+        // return React.createElement('div', null, 'h1', "Hi i\'m a Reactapp");
+      
   }
 }
 
