@@ -96,7 +96,7 @@ class App extends Component {
       );
 
 
-      style.backgroundColor = 'red'
+      style.backgroundColor = 'red'  
 
     }
 
