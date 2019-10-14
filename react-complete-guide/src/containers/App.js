@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import './App.css';
-import Person from './Person/Person';
+import './App.module.css';
+import Button from '@material-ui/core/Button';
+
+// import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
+// import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    console.log('App.js Constructor')
+    // can do this for older style of initializing state
+    // this.state = (... some stuff)
+  }
 
   state = {
     persons: [
@@ -14,6 +26,29 @@ class App extends Component {
     showPersons: false,
 
   }
+
+  static getDerivedStateFromProps(props,state) {
+    console.log('App.js getDerivedstatfromadlkasdfaf', props);
+    return state;
+  }
+
+  //component lifecycle hooks
+  componentDidMount() {
+    console.log('App.js component did mount');
+  }
+
+  shouldComponentUpdate() {
+    // must return true or false
+    // true lets the app keep running, false stops it
+    console.log('App.js shouldcomponentpUp');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('app.js this.componentDidUpdate');
+  }
+
+  
 
   switchNameHandler = (newName) => {
     // console.log('button works');
@@ -63,65 +98,44 @@ class App extends Component {
   }
   
   render() {
-
+    console.log('app js render');
     // inline styling
-    const style = {
+    // const style = {
      
-      border: 'solid cyan 3px',
-      backgroundColor: 'black',
-      padding: '10px',
-      fontSize: '24px',
-      color: 'white',
-      boxShadow: '4px 4px 0 0 black',
+    //   border: 'solid cyan 3px',
+    //   backgroundColor: 'black',
+    //   padding: '10px',
+    //   fontSize: '24px',
+    //   color: 'white',
+    //   boxShadow: '4px 4px 0 0 black',
       
-    };
+    // };
 
     let persons = null;
+    // let classes = [];
 
     if (this.state.showPersons) {
       // Can also use a ternery operator within the return, with simple statements to achieve the same thing
       // however this if statement is the preferred way
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person 
-                click={() => this.deletePersonHandler(person.id)} 
-                name={person.name} 
-                age={person.age}
-                // added unique ids to the states to fix console error about 'keys'
-                key={person.id}
-                changed={ (event) => this.nameChangedHandler(event, person.id)} />
-          })}
-        </div>
-      );
-
-
-      style.backgroundColor = 'red'  
-
+      persons = <Persons
+            persons= {this.state.persons}
+            clicked= {this.deletePersonHandler}
+            changed= {this.nameChangedHandler}></Persons>;
     }
 
-    let classes = [];
-
-    if (this.state.persons.length <= 2) {
-      classes.push('red'); // classes will be 'red'
-
-    }
-
-    if (this.state.persons.length <= 1) {
-      classes.push('bold');
-    }
 
     return (
 
         <div className="App">
           
-          <p className={classes.join(' ')}>Hello this is a paragraph</p>
-  
-        {/*  Use the bind syntax instead typically */}
-          <button key="button1" style={style} onClick={() => this.switchNameHandler('TATER')}>Switch Name</button>
-          <button key="button2" style={style} onClick={this.togglePersonHandler}>Toggle Persons</button>       
-          
+          <Cockpit
+            title = {this.props.appTitle}
+            showPersons= {this.state.showPersons}
+            persons= {this.state.persons}
+            clicked= {this.togglePersonHandler}/>
+
           { persons }
+          <Button variant="contained" color="primary">Material UI Button</Button>
   
         </div>
       );
