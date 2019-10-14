@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './Cockpit.module.css';
 
 const cockpit = (props) => {
+
+    // useEffect is like a lifecycle hook, but for functions
+
+    useEffect(() => {
+        console.log('Cockpit.js use effect');
+        // HTTP request or something like that... 
+        // Executes for every render cycle
+        setTimeout(() => {
+            console.log('Saved data to cloud!');
+        }, 500);
+        return () => {
+            alert('cockpit.js cleanup in useEffect')
+        }
+    }, []); // add an array to say when the UseEffect will exectue, if this array is empty, similar to componentDidMopunt
+
+    useEffect(() => {
+        console.log('second useEffect');
+        return () => {
+            console.log('cockpit.js cleanupwork in 2nd UseEffect');
+        };
+    });
+
     const assignedClasses = [];
     let btnClass = '';
     
@@ -29,4 +51,5 @@ const cockpit = (props) => {
     );
 };
 
-export default cockpit;
+// React.memo is a good optimization tool
+export default React.memo(cockpit);

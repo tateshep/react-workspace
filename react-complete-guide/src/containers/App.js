@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.module.css';
+import classes from './App.module.css';
 import Button from '@material-ui/core/Button';
-
+import WithClass from '../hoc/WithClass';
 // import Person from '../components/Persons/Person/Person';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
@@ -24,6 +24,8 @@ class App extends Component {
     ],
     otherState: 'som other values',
     showPersons: false,
+    showCockpit: true,
+    changeCounter: 0,
 
   }
 
@@ -48,7 +50,7 @@ class App extends Component {
     console.log('app.js this.componentDidUpdate');
   }
 
-  
+
 
   switchNameHandler = (newName) => {
     // console.log('button works');
@@ -77,7 +79,13 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState( {persons: persons} )
+    this.setState((prevState, props) => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1,
+
+      };
+    });
   }
 
   deletePersonHandler = (personIndex) => {
@@ -126,18 +134,21 @@ class App extends Component {
 
     return (
 
-        <div className="App">
-          
-          <Cockpit
+        <WithClass classes={classes.App}>
+          <Button onClick={() => {
+            this.setState({showCockpit:false});
+            }}
+            >Remove Cockpit</Button>
+          {this.state.showCockpit ? <Cockpit
             title = {this.props.appTitle}
             showPersons= {this.state.showPersons}
             persons= {this.state.persons}
-            clicked= {this.togglePersonHandler}/>
+            clicked= {this.togglePersonHandler}/> : null}
 
           { persons }
-          <Button variant="contained" color="primary">Material UI Button</Button>
+          <Button>Material UI Button</Button>
   
-        </div>
+        </WithClass>
       );
   
         // return React.createElement('div', null, 'h1', "Hi i\'m a Reactapp");
