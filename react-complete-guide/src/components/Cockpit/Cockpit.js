@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Cockpit.module.css';
+import Button from '@material-ui/core/Button';
+import AuthContext from '../../context/auth-context';
 
 const cockpit = (props) => {
-
+    const toggleBtnRef = useRef(null);
     // useEffect is like a lifecycle hook, but for functions
 
     useEffect(() => {
         console.log('Cockpit.js use effect');
         // HTTP request or something like that... 
         // Executes for every render cycle
+
+        toggleBtnRef.current.click();
+
         setTimeout(() => {
             console.log('Saved data to cloud!');
         }, 500);
@@ -41,12 +46,17 @@ const cockpit = (props) => {
     }
     return (
         <div className={classes.Cockpit}>
+            <AuthContext.Consumer>
+            {(context) => 
+                 <Button onClick={context.login} variant="contained" color="primary">Log in</Button>
+            }
+            </AuthContext.Consumer>
             <h4>{props.title}</h4>
             <p className={assignedClasses.join(' ')}>Hello this is a paragraph</p>
   
         {/*  Use the bind syntax instead typically */}
             {/* <button className={btnClass} key="button1" onClick={() => props.switchName('TATER')}>Switch Name</button> */}
-            <button key="button2" className={btnClass} onClick={props.clicked}>Toggle Persons</button>     
+            <button ref={toggleBtnRef} key="button2" className={btnClass} onClick={props.clicked}>Toggle Persons</button> 
         </div>
     );
 };

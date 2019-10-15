@@ -5,6 +5,8 @@ import WithClass from '../hoc/WithClass';
 // import Person from '../components/Persons/Person/Person';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+
+import AuthContext from '../context/auth-context';
 // import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
@@ -26,6 +28,7 @@ class App extends Component {
     showPersons: false,
     showCockpit: true,
     changeCounter: 0,
+    authenticated: false,
 
   }
 
@@ -88,6 +91,10 @@ class App extends Component {
     });
   }
 
+  loginHandler = () => {
+    this.setState({authenticated:true});
+  }
+
   deletePersonHandler = (personIndex) => {
 
     // always update state in an immutable fashion. 
@@ -126,6 +133,7 @@ class App extends Component {
       // Can also use a ternery operator within the return, with simple statements to achieve the same thing
       // however this if statement is the preferred way
       persons = <Persons
+            isAuthenticated = {this.state.authenticated}
             persons= {this.state.persons}
             clicked= {this.deletePersonHandler}
             changed= {this.nameChangedHandler}></Persons>;
@@ -139,13 +147,27 @@ class App extends Component {
             this.setState({showCockpit:false});
             }}
             >Remove Cockpit</Button>
-          {this.state.showCockpit ? <Cockpit
+
+          <AuthContext.Provider
+             value={{
+               authenticated: this.state.authenticated,
+               login: this.loginHandler
+               }}
+               >
+
+          {this.state.showCockpit ? (
+            <Cockpit
             title = {this.props.appTitle}
             showPersons= {this.state.showPersons}
             persons= {this.state.persons}
-            clicked= {this.togglePersonHandler}/> : null}
+            clicked= {this.togglePersonHandler}
+            login={this.loginHandler}
+            />) : null}
 
           { persons }
+
+          </AuthContext.Provider>
+
           <Button>Material UI Button</Button>
   
         </WithClass>
