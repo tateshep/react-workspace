@@ -10,6 +10,7 @@ class Blog extends Component {
     state = {
         posts: [],
         selectedPostId: null,
+        error: false
     };
 
 
@@ -25,6 +26,9 @@ class Blog extends Component {
                 });
                 this.setState({posts:updatedPosts});
                 // console.log(response);
+            })
+            .catch(error => {
+                this.setState({error:true});
             });
         }
     
@@ -33,15 +37,17 @@ class Blog extends Component {
     }
 
     render () {
-
-        const posts = this.state.posts.map(post=> {
-                return <Post 
-                clicked={() => this.postSelectedHandler(post.id)}
-                key={post.id}
-                author={post.author}
-                title={post.title}/>;
-            }
-        );
+        let posts = <p> Something went wrong</p>;
+        if (!this.state.error) {
+            posts = this.state.posts.map(post=> {
+                    return <Post 
+                    clicked={() => this.postSelectedHandler(post.id)}
+                    key={post.id}
+                    author={post.author}
+                    title={post.title}/>;
+                }
+            );
+        }
 
         return (
             <div>
